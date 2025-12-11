@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: fscrbak_staging
+    tables:
+      - name: model_master-list
+        description: "Raw products data loaded from GCS"
+      - name: store_tracking_export
+        description: "Raw stores data loaded from GCS"
