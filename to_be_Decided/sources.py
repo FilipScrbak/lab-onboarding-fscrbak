@@ -1,11 +1,15 @@
 from confluent_kafka import Consumer, KafkaException
 from google.cloud import pubsub_v1
 import pandas as pd
+import json
 
 #TODO hide all vital info in secrets or variables
 
-US_TOPIC: str = "us-sales-dev"
-BR_TOPIC: str = "br-sales-dev"
+US_KAFKA_TOPIC: str = "us-sales-dev"
+BR_KAFKA_TOPIC: str = "br-sales-dev"
+
+US_PUBSUB_TOPIC: str = "fscrbak_sales_src"
+BR_PUBSUB_TOPIC: str = "fscrbak_sales_src_br"
 
 
 
@@ -15,7 +19,7 @@ config = {
     "sasl.mechanism": "SCRAM-SHA-512",
     "sasl.username": "admin-user",
     "sasl.password": "K9r3A1f4t",
-    "group.id": "fscrbak1",
+    "group.id": "fscrbak2",
     "auto.offset.reset": "earliest",
     "enable.ssl.certificate.verification": False,
     "enable.auto.commit": False,
@@ -23,9 +27,9 @@ config = {
 }
 
 
-def publish_to_pub_sub(payload):
+def publish_to_pub_sub(payload: str, pubsub_topic:str):
     publisher = pubsub_v1.PublisherClient()
-    topic_path = publisher.topic_path("syntio-onboarding-dev", "fscrbak_sales_src")
+    topic_path = publisher.topic_path("syntio-onboarding-dev", pubsub_topic)
     future = publisher.publish(topic_path, payload.encode("utf-8"))
     print(future.result())
 
@@ -58,11 +62,14 @@ def consume(topic: str):
 
 #todo define process_message
 def main():
-    msg_us = consume(US_TOPIC).value().decode('utf-8')
-    msg_br = consume(BR_TOPIC).value().decode('utf-8')
+    msg_us: str = consume(US_KAFKA_TOPIC).value().decode('utf-8')
+    msg_br: str = consume(BR_KAFKA_TOPIC).value().decode('utf-8')
 
-    publish_to_pub_sub(msg_us)
-    #publish_to_pub_sub(msg_br)
+    publish_to_pub_sub(msg_us, US_PUBSUB_TOPIC)
+
+    msg_br_as_list: list[dict[str,str]] = json.loads(msg_br)
+    for br_json in msg_br_as_list:
+        publish_to_pub_sub(json.dumps(br_json), BR_PUBSUB_TOPIC)
 
 
 if __name__ == "__main__":
