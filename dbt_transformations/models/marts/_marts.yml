@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: dim_stores
+    description: "Dimension table for stores"
+    columns:
+      - name: store_id
+        description: "Primary key of the store"
+        tests:
+          - not_null
+          - unique

@@ -1,0 +1,9 @@
+snapshots:
+  - name: snapshots_stores
+    relation: ref ('stg_stores')
+    config:
+      unique_key: store_id
+      strategy: check
+      check_cols: all
+      dbt_valid_to_current: "PARSE_TIMESTAMP('%Y-%m-%d',  '9999-12-31')"
+
