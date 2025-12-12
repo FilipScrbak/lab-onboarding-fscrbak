@@ -1,6 +1,5 @@
 from confluent_kafka import Consumer, KafkaException
 from google.cloud import pubsub_v1
-import pandas as pd
 import json
 
 #TODO hide all vital info in secrets or variables
@@ -19,7 +18,7 @@ config = {
     "sasl.username": "admin-user",
     "sasl.password": "K9r3A1f4t",
     "group.id": "fscrbak2",
-    "auto.offset.reset": "earliest",
+    "auto.offset.reset": "latest",
     "enable.ssl.certificate.verification": False,
     "enable.auto.commit": False,
     "max.poll.interval.ms": 600000
@@ -76,7 +75,6 @@ def consume(topic: str, consumer: Consumer):
     finally:
         consumer.close()
 
-#todo define process_message
 def main():
     for topic in TOPICS:
         consumer = Consumer(config)
