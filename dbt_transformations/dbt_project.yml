@@ -32,5 +32,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_transformations:
     marts:
-      schema: marts
+      +schema: marts
 

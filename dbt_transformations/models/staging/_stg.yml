@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_customers_us
+    description: "Staging table for customers"
+    columns:
+      - name: customer_id
+        description: "Primary key of the customer"
+        tests:
+          - unique

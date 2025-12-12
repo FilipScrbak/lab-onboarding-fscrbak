@@ -9,3 +9,9 @@ models:
         tests:
           - not_null
           - unique
+  - name: dim_customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique

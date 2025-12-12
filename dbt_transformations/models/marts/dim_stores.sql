@@ -10,7 +10,7 @@ select
   post_code
 
 
-  from {{ ref('snapshots_stores') }}
+  from {{ ref('snapshot_stores') }}
 
   where dbt_valid_to = '9999-12-31 00:00:00 UTC'
 

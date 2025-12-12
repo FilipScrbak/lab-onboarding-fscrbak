@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: mart_src
+    schema: fscrbak_staging
+    tables:
+      - name: us_sales_src
+        description: "Raw products data loaded from GCS"
+      - name: us_sales_rec
+        description: "Raw stores data loaded from GCS"
+
