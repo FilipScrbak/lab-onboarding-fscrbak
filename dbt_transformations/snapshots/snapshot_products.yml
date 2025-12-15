@@ -1,0 +1,8 @@
+snapshots:
+  - name: snapshot_products
+    relation: ref('stg_products')
+    config:
+      strategy: check
+      unique_key: "concat(coalesce(cast(model_id_us as string), ''), '-', coalesce(cast(model_id_br as string), ''))"
+      check_cols: all
+      dbt_valid_to_current: "PARSE_TIMESTAMP('%Y-%m-%d', '9999-12-31')"
