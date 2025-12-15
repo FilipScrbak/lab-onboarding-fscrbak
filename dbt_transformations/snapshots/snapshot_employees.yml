@@ -1,0 +1,9 @@
+snapshots:
+  - name: snapshot_employees
+    relation: ref ('stg_employees')
+    config:
+      unique_key: employee_id
+      strategy: check
+      check_cols: all
+      dbt_valid_to_current: "PARSE_TIMESTAMP('%Y-%m-%d',  '9999-12-31')"
+

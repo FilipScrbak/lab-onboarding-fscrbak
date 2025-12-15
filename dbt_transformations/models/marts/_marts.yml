@@ -15,3 +15,9 @@ models:
         tests:
           - not_null
           - unique
+  - name: dim_employees
+    columns:
+      - name: employee_id
+        tests:
+          - not_null
+          - unique
