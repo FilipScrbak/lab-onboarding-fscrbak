@@ -3,7 +3,7 @@ select * from {{source("raw", "br_sales_src")}}
 )
 
 select
- Cabecalho.TransacaoID as transaction_id,
+ CAST(Cabecalho.TransacaoID AS STRING) as transaction_id,
  Cabecalho.TransacaoTempo as transaction_time,
  Cabecalho.LojaID as store_id,
  Cabecalho.Cliente.ClienteID as customer_id,
@@ -11,7 +11,8 @@ select
  null as employee_id,
  null as quantity,
  to_hex(sha256(cast(Cabecalho.Cartao.Numero as string))) as card_number_hash,
- Modelo.Preco as total_amount
+ Modelo.Preco as total_amount,
+ 'BR' as country
 
 
 

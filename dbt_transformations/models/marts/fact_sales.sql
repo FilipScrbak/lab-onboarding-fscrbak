@@ -59,20 +59,24 @@ final as (
             on dim_date.date_day = DATE(sales.transaction_time)
 
         left join dim_customers
-            on dim_customers.customer_id = sales.customer_id
+            on cast(dim_customers.customer_id AS INT64) = sales.customer_id
 
         left join dim_employees
-            on dim_employees.employee_id = cast(sales.employee_id AS INT64)
+            on dim_employees.employee_id = sales.employee_id
 
         left join dim_stores
             on dim_stores.store_id = sales.store_id
 
-        left join dim_products
-            on dim_products.model_id = sales.model_id
+            left join dim_products
+        on (
+            (sales.country = 'US' and sales.model_id = dim_products.model_id_us)
+            or
+            (sales.country = 'BR' and sales.model_id = dim_products.model_id_br)
+        )
 
 
 {% if is_incremental() %}
-where sales.transaction_time >= ( select timestamp_sub(max(sale_ts), interval 1 day)
+where sales.transaction_time >= ( select timestamp_sub(max(transaction_time), interval 1 day)
 from {{ this }} ) {% endif %})
 
-select * from final
+select distinct * from final
