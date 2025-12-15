@@ -1,6 +1,6 @@
 WITH src AS (
     SELECT *
-    FROM {{ source("raw", "store_tracking_export") }}
+    FROM {{ source("raw", "stroe_tracking_export_v2") }}
 ),
 
 employees AS (

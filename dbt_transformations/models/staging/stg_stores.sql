@@ -9,4 +9,4 @@ CountryCode as country_code,
 PostCode as post_code
 
 
-from {{source("raw", "store_tracking_export")}}
+from {{source("raw", "stroe_tracking_export_v2")}}

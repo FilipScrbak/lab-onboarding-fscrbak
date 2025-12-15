@@ -1,9 +1,8 @@
 snapshots:
   - name: snapshot_employees
-    relation: ref ('stg_employees')
+    relation: ref('stg_employees')
     config:
-      unique_key: employee_id
+      unique_key: "concat(cast(employee_id as string), '-', store_name)"
       strategy: check
       check_cols: all
-      dbt_valid_to_current: "PARSE_TIMESTAMP('%Y-%m-%d',  '9999-12-31')"
-
+      dbt_valid_to_current: "PARSE_TIMESTAMP('%Y-%m-%d', '9999-12-31')"

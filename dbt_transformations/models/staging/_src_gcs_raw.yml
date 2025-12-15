@@ -6,5 +6,9 @@ sources:
     tables:
       - name: model_master-list
         description: "Raw products data loaded from GCS"
-      - name: store_tracking_export
+      - name: stroe_tracking_export_v2
         description: "Raw stores data loaded from GCS"
+      - name: us_sales_src
+        description: "External table for sales records in the US"
+      - name: br_sales_src
+        description: "External table for sales records in Brazil"

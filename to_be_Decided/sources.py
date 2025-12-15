@@ -18,7 +18,7 @@ config = {
     "sasl.username": "admin-user",
     "sasl.password": "K9r3A1f4t",
     "group.id": "fscrbak2",
-    "auto.offset.reset": "latest",
+    "auto.offset.reset": "earliest",
     "enable.ssl.certificate.verification": False,
     "enable.auto.commit": False,
     "max.poll.interval.ms": 600000
