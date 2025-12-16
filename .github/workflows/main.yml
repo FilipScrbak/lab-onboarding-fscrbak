@@ -59,3 +59,24 @@ jobs:
         run: |
           export PYTHONPATH=$PYTHONPATH:.
           pytest
+            - id: auth
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: '${{ vars.PROJECT_ID }}'
+          workload_identity_provider: 'projects/${{ vars.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ vars.WIP_POOL }}/providers/${{ vars.WIP_PROVIDER }}'
+          service_account: '${{ vars.SERVICE_ACCOUNT }}@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com'
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker
+
+      - name: Build and push ingestion Docker image
+        run: |
+          VERSION=${{ steps.gitversion.outputs.semVer }}
+          echo "Ingestion Service version: $VERSION"
+          
+          IMAGE_NAME="gcr.io/${{ vars.PROJECT_ID }}/fscrbak-kafka-to-pubsub"
+          docker build . -t $IMAGE_NAME:$VERSION -t $IMAGE_NAME:latest
+
+          docker push $IMAGE_NAME:$VERSION
+          docker push $IMAGE_NAME:latest
