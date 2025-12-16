@@ -2,7 +2,7 @@ from confluent_kafka import Consumer, KafkaException
 from google.cloud import pubsub_v1
 import json
 
-# hide all vital inf in secrets or variable
+# hide all vital info in secrets or variable
 
 TOPICS: list[str] = ["us-sales-dev", "br-sales-dev"]
 
