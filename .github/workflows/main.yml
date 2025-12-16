@@ -1,0 +1,46 @@
+name: CI/CD onboarding project
+
+on:
+  push:
+    branches:
+    - development
+    paths:
+    - 'ingestion/**'
+    - 'dbt_transformations/**'
+    - 'infrastructure/**'
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+env:
+  PYTHON_VERSION: 3.14
+  TARGET_ENVIRONMENT: dev
+jobs:
+  ingestion: 
+    name: Python ingestion to GCP
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ingestion
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.14'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run formatting check (Black)
+        run: black --check .
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:.
+          pytest
